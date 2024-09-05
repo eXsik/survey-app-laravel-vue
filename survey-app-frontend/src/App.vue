@@ -1,15 +1,12 @@
 <script setup>
-import HelloWorld from "./components/HelloWorld.vue";
+import { RouterView } from "vue-router";
 import { useAuthStore } from "./stores/auth";
 
 const authStore = useAuthStore();
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold underline bg-red-400">
-    {{ authStore.user.data.name }}
-  </h1>
-  <HelloWorld />
+  <RouterView />
 </template>
 
 <style scoped>
