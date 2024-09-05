@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <img
@@ -15,20 +13,26 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
-    <form class="space-y-6" action="#" method="POST">
+    <form
+      class="space-y-6"
+      action="#"
+      method="POST"
+      @submit.prevent="handleRegistration"
+    >
       <div>
         <label
-          for="full_name"
+          for="name"
           class="block text-sm font-medium leading-6 dark:text-white text-gray-900"
           >Full name</label
         >
         <div class="mt-2">
           <input
-            id="full_name"
-            name="full_name"
+            id="name"
+            name="name"
             type="text"
             required
-            class="block w-full rounded-md border-0 py-1.5 dark:text-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            v-model="user.name"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
       </div>
@@ -46,7 +50,8 @@
             type="email"
             autocomplete="email"
             required
-            class="block w-full rounded-md border-0 py-1.5 dark:text-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            v-model="user.email"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
       </div>
@@ -66,7 +71,28 @@
             type="password"
             autocomplete="current-password"
             required
-            class="block w-full rounded-md border-0 py-1.5 dark:text-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            v-model="user.password"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          />
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between">
+          <label
+            for="password"
+            class="block text-sm font-medium leading-6 dark:text-white text-gray-900"
+            >Confirm password</label
+          >
+        </div>
+        <div class="mt-2">
+          <input
+            id="password_confirmation"
+            name="password_confirmation"
+            type="password"
+            required
+            v-model="user.password_confirmation"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
       </div>
@@ -90,5 +116,27 @@
     </p>
   </div>
 </template>
+
+<script setup>
+import { ref } from "vue";
+import { useAuthStore } from "../stores/auth";
+import { RouterLink, useRouter } from "vue-router";
+
+const authStore = useAuthStore();
+const router = useRouter();
+const user = ref({
+  name: null,
+  email: null,
+  password: null,
+  password_confirmation: null,
+});
+
+async function handleRegistration() {
+  await authStore.register(user);
+
+  // if(!)
+  router.push({ name: "Dashboard" });
+}
+</script>
 
 <style scoped></style>
