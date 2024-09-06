@@ -132,9 +132,8 @@ const user = ref({
 });
 
 async function handleRegistration() {
-  await authStore.register(user);
+  await authStore.register(user.value);
 
-  // if(!)
   router.push({ name: "Dashboard" });
 }
 </script>

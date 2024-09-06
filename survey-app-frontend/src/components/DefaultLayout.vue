@@ -160,10 +160,14 @@ import { navigation } from "../constants";
 const authStore = useAuthStore();
 const router = useRouter();
 
-function handleLogout() {
-  authStore.logout();
-  router.push({
-    name: "Login",
-  });
+async function handleLogout() {
+  await authStore
+    .logout()
+    .then(() => {
+      router.push({ name: "Login" });
+    })
+    .catch((err) => {
+      console.log("error", err);
+    });
 }
 </script>
