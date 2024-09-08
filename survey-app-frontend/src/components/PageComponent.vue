@@ -1,26 +1,18 @@
 <template>
-  <header class="bg-white dark:bg-gray-700">
-    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <h1
-        class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
-      >
-        {{ title }}
-      </h1>
+  <header class="bg-white pt-8">
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <slot name="header"> </slot>
     </div>
   </header>
-  <main class="dark:bg-gray-700">
+  <main class="">
     <div
-      class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 bg-white dark:bg-gray-700 min-h-full"
+      class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 bg-white min-h-full"
     >
       <slot></slot>
     </div>
   </main>
 </template>
 
-<script setup>
-const props = defineProps({
-  title: String,
-});
-</script>
+<script setup></script>
 
 <style></style>

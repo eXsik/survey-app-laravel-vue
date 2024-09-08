@@ -1,23 +1,21 @@
 <!-- InputField.vue -->
 <template>
-  <div>
-    <label
-      v-if="label"
-      :for="name"
-      class="block text-sm font-medium text-secondary"
-    >
-      {{ label }}
-    </label>
-    <div class="mt-2">
+  <div class="flex items-start">
+    <div class="flex items-center h-5">
       <input
         :id="id"
+        type="checkbox"
         :name="name"
-        :type="type"
         :value="modelValue"
         :required="required"
-        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
         @input="$emit('update:modelValue', $event.target.value)"
+        class="focus:ring-indigo-500 size-4 text-indigo-600 border-gray-300 rounded"
       />
+    </div>
+    <div class="ml-3 text-sm">
+      <label :for="name" class="block text-sm font-medium text-secondary">
+        {{ label }}
+      </label>
     </div>
   </div>
 </template>
@@ -34,21 +32,15 @@ defineProps({
   },
   label: {
     type: String,
-  },
-  type: {
-    type: String,
     required: true,
   },
   modelValue: {
-    type: [String, Boolean],
+    type: Boolean,
     required: true,
   },
   required: {
     type: Boolean,
     default: false,
-  },
-  autocomplete: {
-    type: String,
   },
 });
 

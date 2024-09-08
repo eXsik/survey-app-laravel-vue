@@ -1,12 +1,12 @@
 <template>
   <div class="sm:mx-auto md:w-full">
     <img
-      class="mx-auto h-10 w-auto"
-      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-      alt="Your Company"
+      class="mx-auto h-12 w-auto"
+      src="../../assets/surveyly_logo.png"
+      alt="Surveyly logo"
     />
     <h2
-      class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white"
+      class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
     >
       Sign in to your account
     </h2>
@@ -40,43 +40,27 @@
         </span>
       </div>
       <div>
-        <label
-          for="email"
-          class="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
-          >Email address</label
-        >
-        <div class="mt-2">
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            required
-            v-model="user.email"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
+        <InputField
+          label="Email address"
+          name="email"
+          id="email"
+          type="email"
+          required="true"
+          autocomplete="email"
+          v-model="user.email"
+        />
       </div>
 
       <div>
-        <div class="flex items-center justify-between">
-          <label
-            for="password"
-            class="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
-            >Password</label
-          >
-        </div>
-        <div class="mt-2">
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            required
-            v-model="user.password"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
+        <InputField
+          label="Password"
+          name="password"
+          id="password"
+          type="password"
+          required="true"
+          autocomplete="current-password"
+          v-model="user.password"
+        />
       </div>
 
       <div class="flex items-center justify-between">
@@ -88,9 +72,7 @@
             class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
             v-model="user.remember"
           />
-          <label
-            for="remember"
-            class="ml-2 block text-sm dark:text-white text-gray-900"
+          <label for="remember" class="ml-2 block text-sm text-gray-900"
             >Remember me</label
           >
         </div>
@@ -106,7 +88,7 @@
       </div>
     </form>
 
-    <p class="mt-10 text-center text-sm text-gray-500 dark:text-white">
+    <p class="mt-10 text-center text-sm text-gray-500">
       Not a member?
       <RouterLink
         :to="{ name: 'Register' }"
@@ -120,7 +102,8 @@
 <script setup>
 import { ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../../stores/auth";
+import InputField from "../../components/ui/InputField.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();

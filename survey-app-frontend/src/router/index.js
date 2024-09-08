@@ -1,11 +1,13 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
+import Login from "../views/auth/Login.vue";
+import Register from "../views/auth/Register.vue";
 import DefaultLayout from "../components/DefaultLayout.vue";
-import Surveys from "../views/Surveys.vue";
 import { useAuthStore } from "../stores/auth";
 import AuthLayout from "../components/AuthLayout.vue";
+import SurveyEdit from "../views/surveys/SurveyEdit.vue";
+import SurveyCreate from "../views/surveys/SurveyCreate.vue";
+import SurveysIndex from "../views/surveys/SurveysIndex.vue";
 
 const routes = [
   {
@@ -16,7 +18,17 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: "/dashboard", name: "Dashboard", component: Dashboard },
-      { path: "/surveys", name: "Surveys", component: Surveys },
+      { path: "/surveys", name: "SurveysIndex", component: SurveysIndex },
+      {
+        path: "/surveys/create",
+        name: "SurveyCreate",
+        component: SurveyCreate,
+      },
+      {
+        path: "/surveys/:id",
+        name: "SurveyEdit",
+        component: SurveyEdit,
+      },
     ],
   },
   {

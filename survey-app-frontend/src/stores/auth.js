@@ -12,7 +12,8 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async register(user) {
       return axiosClient.post("/register", user).then((response) => {
-        this.user = response.data;
+        this.user.data = response.data.user;
+        this.user.token = response.data.token;
         sessionStorage.setItem("TOKEN", response.data.token);
 
         return response.data;
@@ -20,7 +21,8 @@ export const useAuthStore = defineStore("auth", {
     },
     async login(user) {
       return axiosClient.post("/login", user).then((response) => {
-        this.user = response.data;
+        this.user.data = response.data.user;
+        this.user.token = response.data.token;
         sessionStorage.setItem("TOKEN", response.data.token);
 
         return response.data;

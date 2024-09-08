@@ -1,18 +1,14 @@
 <template>
   <div class="min-h-full">
-    <Disclosure
-      as="nav"
-      class="bg-white dark:bg-gray-800 shadow"
-      v-slot="{ open }"
-    >
+    <Disclosure as="nav" class="bg-secondary shadow-lg" v-slot="{ open }">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex h-16 items-center justify-between">
+        <div class="flex h-20 items-center justify-between">
           <div class="flex items-center">
             <div class="flex-shrink-0">
               <img
-                class="h-8 w-8"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                alt="Your Company"
+                class="h-9"
+                src="../assets/surveyly_logo_white.png"
+                alt="Surveyly"
               />
             </div>
             <div class="hidden md:block">
@@ -23,9 +19,9 @@
                   :to="item.to"
                   :class="[
                     $route.name === item.to.name
-                      ? 'bg-indigo-500 dark:bg-gray-900 text-white'
-                      : 'text-gray-500 dark:text-gray-300 hover:bg-indigo-500 dark:hover:bg-gray-700 hover:text-white',
-                    'rounded-md px-3 py-2 text-sm font-medium',
+                      ? 'bg-tertiary '
+                      : ' hover:bg-tertiary ',
+                    'rounded-md px-3 py-2 text-sm font-medium text-white',
                   ]"
                   >{{ item.name }}
                 </RouterLink>
@@ -38,15 +34,19 @@
               <Menu as="div" class="relative ml-3">
                 <div>
                   <MenuButton
-                    class="relative flex max-w-xs items-center rounded-full bg-gray-600 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-indigo-500 dark:focus:ring-offset-gray-800"
+                    class="relative flex max-w-xs rounded-ful text-sm focus:outline-none focus:ring-offset-gray-600"
                   >
-                    <span class="absolute -inset-1.5" />
                     <span class="sr-only">Open user menu</span>
-                    <img
-                      class="h-8 w-8 rounded-full"
-                      :src="authStore.user.data?.imageUrl"
-                      alt=""
-                    />
+                    <div>
+                      <h4 class="text-gray-100 font-medium text-left">
+                        {{ authStore.user.data.name }}
+                        test1
+                      </h4>
+                      <p class="test-sm text-gray-400">
+                        {{ authStore.user.data.email }}
+                        test2
+                      </p>
+                    </div>
                   </MenuButton>
                 </div>
                 <transition
@@ -101,9 +101,9 @@
             :to="item.to"
             :class="[
               $route.name === item.to.name
-                ? 'bg-indigo-500 dark:bg-gray-900 text-white'
-                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-              'block rounded-md px-3 py-2 text-base font-medium',
+                ? 'bg-tertiary '
+                : 'hover:bg-tertiary',
+              'block rounded-md px-3 py-2 text-base font-medium text-white',
             ]"
             >{{ item.name }}</RouterLink
           >
