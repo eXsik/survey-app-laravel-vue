@@ -80,7 +80,7 @@
           :value="type"
           class="capitalize"
         >
-          <span class="capitalize">{{ type }}</span>
+          {{ type }}
         </option>
       </select>
     </div>
@@ -105,7 +105,7 @@
         <button
           type="button"
           @click="addOption()"
-          class="flex items-center text-xs py-1.5 px-2 rounded shadow text-secondary hover:bg-gray-100 transition-colors border border-transparent"
+          class="flex items-center text-xs py-1.5 px-2 rounded shadow text-secondary hover:bg-gray-100 transition-colors border border-gray-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +113,7 @@
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="size-4"
+            class="size-4 mr-2"
           >
             <path
               stroke-linecap="round"
@@ -121,6 +121,7 @@
               d="M12 4.5v15m7.5-7.5h-15"
             />
           </svg>
+          Add
         </button>
       </div>
       <div
@@ -144,7 +145,7 @@
         <button
           type="button"
           @click="removeOption(option)"
-          class="flex items-center text-xs py-1.5 px-2 rounded shadow text-red-400 hover:bg-red-100 transition-colors border border-transparent"
+          class="flex items-center text-xs py-1.5 px-2 rounded shadow text-red-400 hover:bg-red-100 transition-colors border border-gray-300 hover:border-red-100"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -168,10 +169,12 @@
 </template>
 
 <script setup>
-import { capitalize, computed, ref } from "vue";
+import { computed, ref } from "vue";
 import InputField from "../ui/InputField.vue";
 import Textarea from "../ui/Textarea.vue";
 import { useSurveyStore } from "../../stores/surveys";
+import { v4 as uuidv4 } from "uuid";
+
 const props = defineProps({
   question: {},
   index: Number,
@@ -213,10 +216,21 @@ function typeChange() {
 
 // Emit the data change
 function dataChange() {
-  const data = model.value;
+  const data = JSON.parse(JSON.stringify(model.value));
+
   if (!shouldHaveOptions) {
     delete data.data.options;
   }
+
+  emit("change", data);
+}
+
+function addQuestion() {
+  emit("addQuestion", props.index + 1);
+}
+
+function deleteQuestion() {
+  emit("deleteQuestion", props.question);
 }
 </script>
 

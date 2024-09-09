@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axiosClient from "../http/axios";
 
 const tempSurveys = [
   {
@@ -173,6 +174,40 @@ export const useSurveyStore = defineStore("survey", {
   actions: {
     getSurveyById(id) {
       return this.surveys.find((survey) => survey.id === parseInt(id));
+    },
+    saveSurvey(survey) {
+      let response;
+      console.log("survey 123", survey.id);
+      if (survey.id) {
+        // PUT
+        console.log("qwe123123");
+        response = axiosClient
+          .put(`/survey/${survey.id}`, survey)
+          .then((res) => {
+            console.log("save survey put", res);
+            return res;
+          });
+      } else {
+        // CREATE
+        console.log("qwe12312121231231232133");
+
+        response = axiosClient.post(`/survey`, survey).then((res) => {
+          console.log("save survey create", res);
+          return res;
+        });
+      }
+
+      console.log("survey", survey);
+      console.log("response", response);
+      return response;
+    },
+    addSurvey(survey) {
+      this.surveys = [...state.surveys, survey.data];
+    },
+    updateSurvey(survey) {
+      this.surveys = this.surveys.map((sur) =>
+        sur.id === survey.data.id ? survey.data : sur
+      );
     },
   },
 });

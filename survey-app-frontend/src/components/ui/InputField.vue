@@ -40,7 +40,7 @@ defineProps({
     required: true,
   },
   modelValue: {
-    type: [String, Boolean],
+    type: [String, Boolean, null],
     required: true,
   },
   required: {

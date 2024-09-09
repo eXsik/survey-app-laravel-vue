@@ -3,11 +3,11 @@
     <template #header>
       <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold text-secondary">
-          Edit {{ survey.title }} survey
+          {{ survey.id ? survey.title : "Create a Survey" }}
         </h1>
       </div>
     </template>
-    <form @submit.prevent="handleCreateSurvey">
+    <form @submit.prevent="handleSaveSurvey">
       <div class="shadow sm:rounded-md sm:overflow-hidden">
         <div
           class="px-4 py-5 space-y-6 sm:p-6 border border-gray-200 rounded-md"
@@ -137,7 +137,7 @@
               type="submit"
               class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Create
+              {{ surveyId ? "Update" : "Create" }}
             </button>
           </div>
         </div>
@@ -149,22 +149,66 @@
 <script setup lang="ts">
 // import { ref } from "vue";
 import PageComponent from "../../components/PageComponent.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useSurveyStore } from "../../stores/surveys";
 import InputField from "../../components/ui/InputField.vue";
 import Textarea from "../../components/ui/Textarea.vue";
 import QuestionEditor from "../../components/editor/QuestionEditor.vue";
 import CheckboxField from "../../components/ui/CheckboxField.vue";
+import { v4 as uuidv4 } from "uuid";
+import { ref } from "vue";
 
 const route = useRoute();
+const router = useRouter();
 const surveyStore = useSurveyStore();
 
 const surveyId = route.params.id;
-const survey = surveyStore.getSurveyById(surveyId);
-console.log("survey", survey);
+let survey = ref({
+  title: "",
+  slug: "",
+  status: false,
+  description: null,
+  image: null,
+  image_url: null,
+  expire_date: null,
+  questions: [],
+});
 
-function handleUpdateSurvey() {
-  console.log("survey");
+if (surveyId) survey.value = surveyStore.getSurveyById(surveyId);
+
+function addQuestion(index) {
+  const newQuestion = {
+    id: uuidv4(),
+    type: "text",
+    question: "",
+    description: "",
+    data: {},
+  };
+
+  survey.value.questions.splice(index, 0, newQuestion);
+}
+
+function deleteQuestion(question) {
+  let questionArr = survey.value.questions;
+
+  survey.value.questions = questionArr.filter((que) => que.id !== question.id);
+}
+
+function questionChange(question) {
+  let questionArr = survey.value.questions;
+
+  survey.value.questions = questionArr.map((que) =>
+    que.id === question.id ? question : que
+  );
+}
+
+function handleSaveSurvey() {
+  surveyStore.saveSurvey(survey.value).then((res) => {
+    router.push({
+      name: "SurveyView",
+      params: { id: data.data.id },
+    });
+  });
 }
 </script>
 

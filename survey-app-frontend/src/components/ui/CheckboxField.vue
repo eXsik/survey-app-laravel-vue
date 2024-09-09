@@ -8,7 +8,7 @@
         :name="name"
         :value="modelValue"
         :required="required"
-        @input="$emit('update:modelValue', $event.target.value)"
+        @input="$emit('update:modelValue', $event.target.checked)"
         class="focus:ring-indigo-500 size-4 text-indigo-600 border-gray-300 rounded"
       />
     </div>
@@ -35,7 +35,7 @@ defineProps({
     required: true,
   },
   modelValue: {
-    type: Boolean,
+    type: [Boolean, String],
     required: true,
   },
   required: {

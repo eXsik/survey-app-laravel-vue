@@ -5,9 +5,8 @@ import Register from "../views/auth/Register.vue";
 import DefaultLayout from "../components/DefaultLayout.vue";
 import { useAuthStore } from "../stores/auth";
 import AuthLayout from "../components/AuthLayout.vue";
-import SurveyEdit from "../views/surveys/SurveyEdit.vue";
-import SurveyCreate from "../views/surveys/SurveyCreate.vue";
 import SurveysIndex from "../views/surveys/SurveysIndex.vue";
+import SurveyView from "../views/surveys/SurveyView.vue";
 
 const routes = [
   {
@@ -22,12 +21,12 @@ const routes = [
       {
         path: "/surveys/create",
         name: "SurveyCreate",
-        component: SurveyCreate,
+        component: SurveyView,
       },
       {
         path: "/surveys/:id",
-        name: "SurveyEdit",
-        component: SurveyEdit,
+        name: "SurveyView",
+        component: SurveyView,
       },
     ],
   },

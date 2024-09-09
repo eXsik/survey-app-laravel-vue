@@ -59,7 +59,7 @@
         ></div>
         <div class="flex justify-between items-center mt-4">
           <RouterLink
-            :to="{ name: 'SurveyEdit', params: { id: survey.id } }"
+            :to="{ name: 'SurveyView', params: { id: survey.id } }"
             class="flex p-2 border border-indigo-500 text-sm rounded-md text-indigo-500 hover:text-indigo-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 items-center"
           >
             <svg
