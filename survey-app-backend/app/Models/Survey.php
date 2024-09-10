@@ -11,7 +11,7 @@ class Survey extends Model
 {
     use HasFactory, HasSlug;
 
-    protected $fillable = ['user_id', 'title', 'description', 'slug', 'status', 'expire_date'];
+    protected $fillable = ['user_id', 'image', 'title', 'description', 'slug', 'status', 'expire_date'];
 
     public function getSlugOptions(): SlugOptions
     {

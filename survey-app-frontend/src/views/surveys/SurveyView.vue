@@ -17,7 +17,14 @@
               Image
             </label>
             <div class="mt-1 flex items-center">
+              <img
+                v-if="survey.image_url"
+                :src="survey.image_url"
+                :alt="survey.title"
+                class="w-64 h-48 rounded-lg object-cover"
+              />
               <span
+                v-else
                 class="flex items-center justify-center size-12 rounded-full overflow-hidden"
               >
                 <svg
@@ -44,7 +51,12 @@
                   class="z-10 cursor-pointer w-full h-full py-2 px-3 inline-block"
                   >Change</label
                 >
-                <input id="image" type="file" class="hidden" />
+                <input
+                  id="image"
+                  type="file"
+                  class="hidden"
+                  @change="onImageChange"
+                />
               </button>
             </div>
           </div>
@@ -203,13 +215,24 @@ function questionChange(question) {
 }
 
 function handleSaveSurvey() {
-  surveyStore.saveSurvey(survey.value).then((res) => {
+  surveyStore.saveSurvey(survey.value).then(() => {
     router.push({
-      name: "SurveyView",
-      params: { id: data.data.id },
+      name: "SurveysIndex",
     });
   });
 }
-</script>
 
-<style></style>
+function onImageChange(event) {
+  const file = event.target.files[0];
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    // the field to send on backend and apply validations
+    survey.value.image = reader.result;
+    // the field to display here
+    survey.value.image_url = reader.result;
+  };
+
+  reader.readAsDataURL(file);
+}
+</script>

@@ -37,6 +37,9 @@
       </div>
     </template>
     <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 mt-10">
+      <div v-if="isLoading">Loading...</div>
+      <div v-if="error" class="text-red-500">{{ error }}</div>
+
       <div
         v-for="survey in surveys"
         :key="survey.id"
@@ -106,13 +109,18 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useSurveyStore } from "../../stores/surveys";
 import PageComponent from "../../components/PageComponent.vue";
 import { RouterLink } from "vue-router";
 
-const store = useSurveyStore();
-const surveys = computed(() => store.surveys);
+const surveyStore = useSurveyStore();
+const { isLoading, error } = surveyStore;
+
+onMounted(async () => {
+  await surveyStore.fetchSurveys();
+});
+const surveys = computed(() => surveyStore.surveys);
 
 function deleteSurvey() {
   if (confirm("Are you sure you want to delete this survey?")) {

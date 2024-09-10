@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateSurveyRequest;
 use App\Http\Resources\SurveyResource;
 use App\Models\Survey;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SurveyController extends Controller
 {
@@ -25,9 +26,16 @@ class SurveyController extends Controller
      */
     public function store(StoreSurveyRequest $request)
     {
-        $result = Survey::create($request->validated());
+        $data = $request->validated();
 
-        return new SurveyResource($result);
+        if (isset($data['image'])) {
+            $relativePath = $this->saveImage($data['image']);
+            $data['image'] = $relativePath;
+        }
+
+        $survey = Survey::create($data);
+
+        return new SurveyResource($survey);
     }
 
     /**
@@ -49,7 +57,19 @@ class SurveyController extends Controller
      */
     public function update(UpdateSurveyRequest $request, Survey $survey)
     {
-        $survey->update($request->validated());
+        $data = $request->validated();
+
+        if (isset($data['image'])) {
+            $relativePath = $this->saveImage($data['image']);
+            $data['image'] = $relativePath;
+
+            // If there's an old image, delete it
+            if ($survey->image) {
+                Storage::disk('public')->delete($survey->image);
+            }
+        }
+
+        $survey->update($data);
 
         return new SurveyResource($survey);
     }
@@ -67,5 +87,32 @@ class SurveyController extends Controller
 
         $survey->delete();
         return response('', 204);
+    }
+
+    private function saveImage($image): string
+    {
+        // Check if image is valid base64 string
+        if (preg_match("/^data:image\/(\w+);base64,/", $image, $type)) {
+            // Take out the base64 encoded text without mime type
+            $image = substr($image, strpos($image, ",") + 1);
+            // get the file extension
+            $type = strtolower($type[1]);
+
+            // Check if file is an image 
+            if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+                throw new \Exception('Invalid image type.');
+            }
+
+            $image = str_replace(' ', '+', $image);
+            $image = base64_decode($image);
+        } else {
+            throw new \Exception('Did not match data URI with image data');
+        }
+
+        $file = uniqid() . '.' . $type;
+        $relativePath = 'images/' . $file;
+        Storage::disk('public')->put($relativePath, $image);
+
+        return $relativePath;
     }
 }
