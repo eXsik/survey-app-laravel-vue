@@ -6,9 +6,9 @@
         :id="id"
         type="checkbox"
         :name="name"
-        :value="modelValue"
+        :checked="modelValue"
         :required="required"
-        @input="$emit('update:modelValue', $event.target.checked)"
+        @change="$emit('update:modelValue', $event.target.checked)"
         class="focus:ring-indigo-500 size-4 text-indigo-600 border-gray-300 rounded"
       />
     </div>
@@ -35,7 +35,7 @@ defineProps({
     required: true,
   },
   modelValue: {
-    type: [Boolean, String],
+    type: [Boolean, Number],
     required: true,
   },
   required: {

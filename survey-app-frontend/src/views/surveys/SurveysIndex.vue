@@ -47,7 +47,7 @@
       >
         <div class="w-full relative">
           <img
-            :src="survey.image"
+            :src="survey.image_url"
             :alt="survey.title + ' image'"
             class="w-full h-60 object-cover rounded-2xl aspect-video"
           />
@@ -121,7 +121,7 @@ onMounted(async () => {
   await surveyStore.fetchSurveys();
 });
 const surveys = computed(() => surveyStore.surveys);
-
+console.log("surveys", surveys);
 function deleteSurvey() {
   if (confirm("Are you sure you want to delete this survey?")) {
     // delete survey

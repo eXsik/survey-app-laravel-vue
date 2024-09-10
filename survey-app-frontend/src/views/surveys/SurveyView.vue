@@ -168,13 +168,14 @@ import Textarea from "../../components/ui/Textarea.vue";
 import QuestionEditor from "../../components/editor/QuestionEditor.vue";
 import CheckboxField from "../../components/ui/CheckboxField.vue";
 import { v4 as uuidv4 } from "uuid";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const route = useRoute();
 const router = useRouter();
 const surveyStore = useSurveyStore();
 
 const surveyId = route.params.id;
+
 let survey = ref({
   title: "",
   slug: "",
@@ -186,7 +187,11 @@ let survey = ref({
   questions: [],
 });
 
-if (surveyId) survey.value = surveyStore.getSurveyById(surveyId);
+onMounted(async () => {
+  if (surveyId) {
+    survey.value = await surveyStore.getSurveyById(surveyId);
+  }
+});
 
 function addQuestion(index) {
   const newQuestion = {
@@ -215,6 +220,7 @@ function questionChange(question) {
 }
 
 function handleSaveSurvey() {
+  console.log("test", survey.value);
   surveyStore.saveSurvey(survey.value).then(() => {
     router.push({
       name: "SurveysIndex",

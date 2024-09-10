@@ -31,13 +31,15 @@ export const useSurveyStore = defineStore("survey", {
 
       return this.surveys;
     },
-    getSurveyById(id) {
-      return this.surveys.find((survey) => survey.id === parseInt(id));
+    async getSurveyById(id) {
+      console.log("surveys", this.surveys);
+      return this.surveys.find((survey) => survey.id == id);
     },
-    saveSurvey(survey) {
+    async saveSurvey(survey) {
       delete survey.image_url;
       let response;
 
+      console.log("save survey", survey);
       if (survey.id) {
         // PUT
         response = axiosClient
