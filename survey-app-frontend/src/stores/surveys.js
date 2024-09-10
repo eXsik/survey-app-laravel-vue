@@ -48,13 +48,29 @@ export const useSurveyStore = defineStore("survey", {
 
       return response;
     },
-    addSurvey(survey) {
-      this.surveys = [...state.surveys, survey.data];
-    },
-    updateSurvey(survey) {
-      this.surveys = this.surveys.map((sur) =>
-        sur.id === survey.data.id ? survey.data : sur
-      );
+    // addSurvey(survey) {
+    //   this.surveys = [...state.surveys, survey.data];
+    // },
+    // updateSurvey(survey) {
+    //   this.surveys = this.surveys.map((sur) =>
+    //     sur.id === survey.data.id ? survey.data : sur
+    //   );
+    // },
+    async deleteSurvey(surveyId) {
+      try {
+        this.isLoading = true;
+
+        axiosClient.delete(`/survey/${surveyId}`).then((res) => {
+          return res;
+        });
+      } catch (error) {
+        console.error("Error fetching surveys:", error);
+        this.error = "Failed to fetch surveys";
+      } finally {
+        this.isLoading = false;
+      }
+
+      // this.surveys = this.surveys.filter((sur) => sur.id !== surveyId);
     },
   },
 });
