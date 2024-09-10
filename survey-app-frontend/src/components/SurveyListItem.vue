@@ -9,7 +9,8 @@
         class="w-full h-60 object-cover rounded-2xl aspect-video"
       />
     </div>
-    <h4 class="mt-8">{{ survey.created_at }}</h4>
+    <!-- TODO: -->
+    <!-- <h4 class="mt-8">{{ survey.created_at }}</h4> -->
     <h4 class="mt-2 mb-4 text-lg font-bold text-secondary">
       {{ survey.title }}
     </h4>

@@ -79,6 +79,7 @@ async function deleteSurvey(surveyId) {
         name: "SurveysIndex",
       });
     });
+    await fetchSurveys();
   }
 }
 </script>
