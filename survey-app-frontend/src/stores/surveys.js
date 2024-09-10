@@ -4,15 +4,12 @@ import axiosClient from "../http/axios";
 export const useSurveyStore = defineStore("survey", {
   state: () => ({
     surveys: [],
-    // currentSurvey: {
-    //   isLoading: false,
-    //   data: {},
-    // },
     isLoading: false,
     error: null,
     questionTypes: ["text", "select", "radio", "checkbox", "textarea"],
   }),
   getters: {},
+  persist: true,
   actions: {
     async fetchSurveys() {
       this.isLoading = true;

@@ -40,11 +40,9 @@
                     <div>
                       <h4 class="text-gray-100 font-medium text-left">
                         {{ authStore.user.data.name }}
-                        test1
                       </h4>
                       <p class="test-sm text-gray-400">
                         {{ authStore.user.data.email }}
-                        test2
                       </p>
                     </div>
                   </MenuButton>

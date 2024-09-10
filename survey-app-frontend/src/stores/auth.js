@@ -9,6 +9,7 @@ export const useAuthStore = defineStore("auth", {
     },
   }),
   getters: {},
+  persist: true,
   actions: {
     async register(user) {
       return axiosClient.post("/register", user).then((response) => {
