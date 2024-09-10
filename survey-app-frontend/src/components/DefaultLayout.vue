@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-full">
-    <Disclosure as="nav" class="bg-secondary shadow-lg" v-slot="{ open }">
+    <Disclosure as="nav" class="bg-secondary shadow-lg mb-10" v-slot="{ open }">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-20 items-center justify-between">
           <div class="flex items-center">
@@ -39,6 +39,7 @@
                     <span class="sr-only">Open user menu</span>
                     <div>
                       <h4 class="text-gray-100 font-medium text-left">
+                        test
                         {{ authStore.user.data.name }}
                       </h4>
                       <p class="test-sm text-gray-400">
@@ -165,7 +166,7 @@ async function handleLogout() {
       router.push({ name: "Login" });
     })
     .catch((err) => {
-      console.log("error", err);
+      console.error("error", err);
     });
 }
 </script>

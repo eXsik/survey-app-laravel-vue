@@ -7,6 +7,7 @@
         </h1>
       </div>
     </template>
+
     <form @submit.prevent="handleSaveSurvey">
       <div class="shadow sm:rounded-md sm:overflow-hidden">
         <div
@@ -219,7 +220,6 @@ function questionChange(question) {
 }
 
 function handleSaveSurvey() {
-  console.log("test", survey.value);
   surveyStore.saveSurvey(survey.value).then(() => {
     router.push({
       name: "SurveysIndex",

@@ -45,7 +45,7 @@
           name="email"
           id="email"
           type="email"
-          required="true"
+          :required="true"
           autocomplete="email"
           v-model="user.email"
         />
@@ -57,7 +57,7 @@
           name="password"
           id="password"
           type="password"
-          required="true"
+          :required="true"
           autocomplete="current-password"
           v-model="user.password"
         />
@@ -121,7 +121,7 @@ async function handleLogin() {
       router.push({ name: "Dashboard" });
     })
     .catch((err) => {
-      console.log("error", err);
+      console.error("error", err);
       errorMsg.value = err.response.data.error;
     });
 }

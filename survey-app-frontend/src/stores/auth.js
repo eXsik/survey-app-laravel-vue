@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axiosClient from "../http/axios";
+import { useSurveyStore } from "./surveys";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -35,8 +36,12 @@ export const useAuthStore = defineStore("auth", {
         .then((response) => {
           this.user.token = null;
           this.user.data = {};
-          console.log("response", response);
+          const surveyStore = useSurveyStore();
+          surveyStore.surveys = [];
+
           sessionStorage.removeItem("TOKEN");
+          localStorage.removeItem("survey");
+          localStorage.removeItem("auth");
 
           return response;
         })
