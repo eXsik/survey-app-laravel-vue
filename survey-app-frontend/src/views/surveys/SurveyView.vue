@@ -1,7 +1,7 @@
 <template>
   <PageComponent>
     <template #header>
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between bg-slate-50">
         <h1 class="text-3xl font-bold text-secondary">
           {{ surveyId ? survey?.title : "Create a Survey" }}
         </h1>

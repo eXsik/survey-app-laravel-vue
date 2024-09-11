@@ -9,15 +9,11 @@
 </template>
 
 <script setup>
-// import { computed } from "vue";
 import { useNotificationStore } from "../stores/notifications";
 import { storeToRefs } from "pinia";
 
 const notificationStore = useNotificationStore();
 const { notification } = storeToRefs(notificationStore);
-
-console.log("notification", notification);
-// const notification = computed(() => surveyStore.notification);
 </script>
 
 <style></style>

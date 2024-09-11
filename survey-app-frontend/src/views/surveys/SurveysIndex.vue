@@ -42,28 +42,31 @@
           Add new Survey
         </RouterLink>
       </div>
-      <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 mt-10">
-        <SurveyListItem
-          v-for="(survey, index) in surveys"
-          :key="survey.id"
-          :survey="survey"
-          class="opacity-0 animate-fade-in-down"
-          :style="{ animationDelay: `${index * 0.15}s` }"
-          @delete="deleteSurvey(survey.id)"
-        />
+      <div>
+        <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 mt-10">
+          <SurveyListItem
+            v-for="(survey, index) in surveys.data"
+            :key="survey.id"
+            :survey="survey"
+            class="opacity-0 animate-fade-in-down bg-white"
+            :style="{ animationDelay: `${index * 0.15}s` }"
+            @delete="deleteSurvey(survey.id)"
+          />
+        </div>
+        <Pagination :links="surveys.links" />
       </div>
     </div>
   </PageComponent>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useSurveyStore } from "../../stores/surveys";
 import PageComponent from "../../components/PageComponent.vue";
 import Loader from "../../components/ui/Loader.vue";
 import { RouterLink, useRouter } from "vue-router";
 import SurveyListItem from "../../components/SurveyListItem.vue";
-import { storeToRefs } from "pinia";
+import Pagination from "../../components/Pagination.vue";
 
 const surveyStore = useSurveyStore();
 const { error, fetchSurveys } = surveyStore;
@@ -72,8 +75,10 @@ onMounted(async () => {
   await fetchSurveys();
 });
 
-let { surveys, isLoading } = storeToRefs(surveyStore);
 const router = useRouter();
+
+let surveys = computed(() => surveyStore.surveys);
+let isLoading = computed(() => surveyStore.surveys.isLoading);
 
 async function deleteSurvey(surveyId) {
   if (confirm("Are you sure you want to delete this survey?")) {

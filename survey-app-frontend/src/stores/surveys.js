@@ -5,6 +5,7 @@ export const useSurveyStore = defineStore("survey", {
   state: () => ({
     surveys: {
       data: [],
+      links: [],
       isLoading: false,
     },
     currentSurvey: {
@@ -14,21 +15,18 @@ export const useSurveyStore = defineStore("survey", {
     isLoading: false,
     error: null,
     questionTypes: ["text", "select", "radio", "checkbox", "textarea"],
-    notification: {
-      show: false,
-      type: null,
-      message: null,
-    },
   }),
   getters: {},
   persist: true,
   actions: {
-    async fetchSurveys() {
+    async fetchSurveys({ url = null } = {}) {
+      url = url || "/survey";
       this.surveys.isLoading = true;
       this.error = null;
       try {
-        await axiosClient.get(`/survey`).then((res) => {
+        await axiosClient.get(url).then((res) => {
           this.surveys.data = res.data.data;
+          this.surveys.links = res.data.meta.links;
         });
       } catch (error) {
         console.error("Error fetching surveys:", error);
@@ -87,16 +85,6 @@ export const useSurveyStore = defineStore("survey", {
       } finally {
         this.isLoading = false;
       }
-    },
-
-    notify(message, type) {
-      this.notification.show = true;
-      this.notification.type = type;
-      this.notification.message = message;
-
-      setTimeout(() => {
-        this.notification.show = false;
-      }, 3000);
     },
   },
 });

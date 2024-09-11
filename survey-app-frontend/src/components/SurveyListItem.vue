@@ -1,6 +1,6 @@
 <template>
   <div
-    class="group flex flex-col h-full border border-gray-200 hover:border-transparent hover:shadow-lg focus:outline-none focus:border-transparent focus:shadow-lg transition duration-300 rounded-xl p-5"
+    class="group flex flex-col h-full border shadow border-gray-200 hover:border-transparent hover:shadow-lg focus:outline-none focus:border-transparent focus:shadow-lg transition duration-300 rounded-xl p-5"
   >
     <div class="w-full relative">
       <img
