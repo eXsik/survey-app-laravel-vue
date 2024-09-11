@@ -3,7 +3,14 @@ import axiosClient from "../http/axios";
 
 export const useSurveyStore = defineStore("survey", {
   state: () => ({
-    surveys: [],
+    surveys: {
+      data: [],
+      isLoading: false,
+    },
+    currentSurvey: {
+      data: {},
+      isLoading: false,
+    },
     isLoading: false,
     error: null,
     questionTypes: ["text", "select", "radio", "checkbox", "textarea"],
@@ -12,21 +19,35 @@ export const useSurveyStore = defineStore("survey", {
   persist: true,
   actions: {
     async fetchSurveys() {
-      this.isLoading = true;
+      this.surveys.isLoading = true;
       this.error = null;
       try {
         await axiosClient.get(`/survey`).then((res) => {
-          this.surveys = res.data.data;
+          this.surveys.data = res.data.data;
         });
       } catch (error) {
         console.error("Error fetching surveys:", error);
         this.error = "Failed to fetch surveys";
       } finally {
-        this.isLoading = false;
+        this.surveys.isLoading = false;
       }
     },
-    getSurveyById(id) {
-      return this.surveys.find((survey) => survey.id == id);
+    async getSurveyById(id) {
+      this.currentSurvey.isLoading = true;
+      this.error = null;
+      try {
+        await axiosClient.get(`/survey/${id}`).then((res) => {
+          this.currentSurvey.data = res.data.data;
+
+          return res.data.data;
+        });
+      } catch (error) {
+        console.error(`Error fetching survey ${id}:`, error);
+        this.error = `Failed to fetch survey ${id}`;
+      } finally {
+        this.currentSurvey.isLoading = false;
+      }
+      // return this.surveys.find((survey) => survey.id == id);
     },
     async saveSurvey(survey) {
       delete survey.image_url;

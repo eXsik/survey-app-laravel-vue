@@ -3,12 +3,12 @@
     <template #header>
       <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold text-secondary">
-          {{ survey.id ? survey.title : "Create a Survey" }}
+          {{ surveyId ? survey?.title : "Create a Survey" }}
         </h1>
         <button
-          v-if="survey.id"
+          v-if="survey?.id"
           type="button"
-          @click="deleteSurvey(survey.id)"
+          @click="deleteSurvey(survey?.id)"
           class="py-2 px-3 text-white bg-red-500 rounded-md hover:bg-red-600 shadow-md flex items-center"
         >
           <svg
@@ -30,8 +30,10 @@
         </button>
       </div>
     </template>
-
-    <form @submit.prevent="handleSaveSurvey">
+    <div v-if="isLoading">
+      <Loader />
+    </div>
+    <form v-else @submit.prevent="handleSaveSurvey">
       <div class="shadow sm:rounded-md sm:overflow-hidden">
         <div
           class="px-4 py-5 space-y-6 sm:p-6 border border-gray-200 rounded-md"
@@ -207,12 +209,12 @@ import Textarea from "../../components/ui/Textarea.vue";
 import QuestionEditor from "../../components/editor/QuestionEditor.vue";
 import CheckboxField from "../../components/ui/CheckboxField.vue";
 import { v4 as uuidv4 } from "uuid";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
+import Loader from "../../components/ui/Loader.vue";
 
 const route = useRoute();
 const router = useRouter();
 const surveyStore = useSurveyStore();
-
 const surveyId = route.params.id;
 
 let survey = ref({
@@ -227,9 +229,12 @@ let survey = ref({
 
 onMounted(async () => {
   if (surveyId) {
-    survey.value = await surveyStore.getSurveyById(surveyId);
+    await surveyStore.getSurveyById(surveyId);
+    survey.value = surveyStore.currentSurvey.data;
   }
 });
+
+let isLoading = computed(() => surveyStore.currentSurvey.isLoading);
 
 function addQuestion(index) {
   const newQuestion = {

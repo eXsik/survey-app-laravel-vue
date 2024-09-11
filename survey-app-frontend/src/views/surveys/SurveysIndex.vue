@@ -68,8 +68,8 @@ const { error, fetchSurveys } = surveyStore;
 onMounted(async () => {
   await fetchSurveys();
 });
-const surveys = computed(() => surveyStore.surveys);
-let isLoading = computed(() => surveyStore.isLoading);
+const surveys = computed(() => surveyStore.surveys.data);
+let isLoading = computed(() => surveyStore.surveys.isLoading);
 const router = useRouter();
 
 async function deleteSurvey(surveyId) {
