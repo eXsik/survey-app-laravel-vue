@@ -33,7 +33,11 @@
     <div v-if="isLoading">
       <Loader />
     </div>
-    <form v-else @submit.prevent="handleSaveSurvey">
+    <form
+      v-else
+      @submit.prevent="handleSaveSurvey"
+      class="animate-fade-in-down"
+    >
       <div class="shadow sm:rounded-md sm:overflow-hidden">
         <div
           class="px-4 py-5 space-y-6 sm:p-6 border border-gray-200 rounded-md"
@@ -204,17 +208,20 @@
 import PageComponent from "../../components/PageComponent.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useSurveyStore } from "../../stores/surveys";
+import { useNotificationStore } from "../../stores/notifications";
 import InputField from "../../components/ui/InputField.vue";
 import Textarea from "../../components/ui/Textarea.vue";
 import QuestionEditor from "../../components/editor/QuestionEditor.vue";
 import CheckboxField from "../../components/ui/CheckboxField.vue";
 import { v4 as uuidv4 } from "uuid";
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import Loader from "../../components/ui/Loader.vue";
+import { storeToRefs } from "pinia";
 
 const route = useRoute();
 const router = useRouter();
 const surveyStore = useSurveyStore();
+const notificationStore = useNotificationStore();
 const surveyId = route.params.id;
 
 let survey = ref({
@@ -233,8 +240,7 @@ onMounted(async () => {
     survey.value = surveyStore.currentSurvey.data;
   }
 });
-
-let isLoading = computed(() => surveyStore.currentSurvey.isLoading);
+let { isLoading } = storeToRefs(surveyStore);
 
 function addQuestion(index) {
   const newQuestion = {
@@ -264,6 +270,10 @@ function questionChange(question) {
 
 function handleSaveSurvey() {
   surveyStore.saveSurvey(survey.value).then(() => {
+    notificationStore.notify({
+      type: "success",
+      message: "Survey was successfully updated.",
+    });
     router.push({
       name: "SurveysIndex",
     });

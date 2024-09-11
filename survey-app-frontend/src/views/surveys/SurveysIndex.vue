@@ -44,9 +44,11 @@
       </div>
       <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 mt-10">
         <SurveyListItem
-          v-for="survey in surveys"
+          v-for="(survey, index) in surveys"
           :key="survey.id"
           :survey="survey"
+          class="opacity-0 animate-fade-in-down"
+          :style="{ animationDelay: `${index * 0.15}s` }"
           @delete="deleteSurvey(survey.id)"
         />
       </div>
@@ -55,12 +57,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useSurveyStore } from "../../stores/surveys";
 import PageComponent from "../../components/PageComponent.vue";
 import Loader from "../../components/ui/Loader.vue";
 import { RouterLink, useRouter } from "vue-router";
 import SurveyListItem from "../../components/SurveyListItem.vue";
+import { storeToRefs } from "pinia";
 
 const surveyStore = useSurveyStore();
 const { error, fetchSurveys } = surveyStore;
@@ -68,8 +71,8 @@ const { error, fetchSurveys } = surveyStore;
 onMounted(async () => {
   await fetchSurveys();
 });
-const surveys = computed(() => surveyStore.surveys.data);
-let isLoading = computed(() => surveyStore.surveys.isLoading);
+
+let { surveys, isLoading } = storeToRefs(surveyStore);
 const router = useRouter();
 
 async function deleteSurvey(surveyId) {

@@ -14,6 +14,11 @@ export const useSurveyStore = defineStore("survey", {
     isLoading: false,
     error: null,
     questionTypes: ["text", "select", "radio", "checkbox", "textarea"],
+    notification: {
+      show: false,
+      type: null,
+      message: null,
+    },
   }),
   getters: {},
   persist: true,
@@ -47,7 +52,6 @@ export const useSurveyStore = defineStore("survey", {
       } finally {
         this.currentSurvey.isLoading = false;
       }
-      // return this.surveys.find((survey) => survey.id == id);
     },
     async saveSurvey(survey) {
       delete survey.image_url;
@@ -69,14 +73,7 @@ export const useSurveyStore = defineStore("survey", {
 
       return response;
     },
-    // addSurvey(survey) {
-    //   this.surveys = [...state.surveys, survey.data];
-    // },
-    // updateSurvey(survey) {
-    //   this.surveys = this.surveys.map((sur) =>
-    //     sur.id === survey.data.id ? survey.data : sur
-    //   );
-    // },
+
     async deleteSurvey(surveyId) {
       try {
         this.isLoading = true;
@@ -90,8 +87,16 @@ export const useSurveyStore = defineStore("survey", {
       } finally {
         this.isLoading = false;
       }
+    },
 
-      // this.surveys = this.surveys.filter((sur) => sur.id !== surveyId);
+    notify(message, type) {
+      this.notification.show = true;
+      this.notification.type = type;
+      this.notification.message = message;
+
+      setTimeout(() => {
+        this.notification.show = false;
+      }, 3000);
     },
   },
 });

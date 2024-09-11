@@ -138,6 +138,8 @@
     </Disclosure>
 
     <RouterView />
+
+    <Notification />
   </div>
 </template>
 
@@ -155,6 +157,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import { navigation } from "../constants";
+import Notification from "./Notification.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
