@@ -9,6 +9,7 @@ use App\Models\Question;
 use App\Models\Survey;
 use App\OptionType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -22,7 +23,7 @@ class SurveyController extends Controller
     {
         $user = $request->user();
 
-        return SurveyResource::collection(Survey::where("user_id", $user->id)->paginate());
+        return SurveyResource::collection(Survey::where("user_id", $user->id)->paginate(6));
     }
 
     /**
@@ -55,7 +56,7 @@ class SurveyController extends Controller
     {
         $user = $request->user();
 
-        if ($user->id !== $request->user_id) {
+        if ($user->id !== $survey->user_id) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -80,6 +81,32 @@ class SurveyController extends Controller
         }
 
         $survey->update($data);
+
+        // Get ids as play array of existing questions
+        $existingIds = $survey->questions()->pluck('id')->toArray();
+        // Get ids as plain array of new questions
+        $newIds = Arr::pluck($data['questions'], 'id');
+        // Find questions to delete
+        $toDelete = array_diff($existingIds, $newIds);
+        // Find questions to add
+        $toAdd = array_diff($newIds, $existingIds);
+        // Delete questions by $toDelete array 
+        Question::destroy($toDelete);
+        // Create new questions
+        foreach ($data['questions'] as $question) {
+            if (in_array($question['id'], $toAdd)) {
+                $question['survey_id'] = $survey->id;
+                $this->createQuestion($question);
+            }
+        }
+
+        // Update existing question
+        $questionMap = collect($data['questions'])->keyBy('id');
+        foreach ($survey->questions as $question) {
+            if (isset($questionMap[$question->id])) {
+                $this->updateQuestion($question, $questionMap[$question->id]);
+            }
+        }
 
         return new SurveyResource($survey);
     }
@@ -147,5 +174,21 @@ class SurveyController extends Controller
         ]);
 
         return Question::create($validator->validated());
+    }
+
+    private function updateQuestion(Question $question, $data)
+    {
+        if (is_array($data['data'])) {
+            $data['data'] = json_encode($data['data']);
+        }
+        $validator = Validator::make($data, [
+            'id' => 'exists:App\Models\Question,id',
+            'question' => 'required|string',
+            'type' => ['required', Rule::enum(OptionType::class)],
+            'description' => 'nullable|string',
+            'data' => 'present',
+        ]);
+
+        return $question->update($validator->validated());
     }
 }
