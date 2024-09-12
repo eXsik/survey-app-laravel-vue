@@ -10,7 +10,7 @@ class Question extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['question', 'data', 'type', 'survey_id', 'description'];
+    protected $fillable = ['id', 'question', 'data', 'type', 'survey_id', 'description'];
 
     public function survey(): BelongsTo
     {

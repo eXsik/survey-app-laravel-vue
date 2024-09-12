@@ -7,12 +7,18 @@ import { useAuthStore } from "../stores/auth";
 import AuthLayout from "../components/AuthLayout.vue";
 import SurveysIndex from "../views/surveys/SurveysIndex.vue";
 import SurveyView from "../views/surveys/SurveyView.vue";
+import SurveyPublicView from "../views/surveys/SurveyPublicView.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/view/survey/:slug",
+    name: "SurveyPublicView",
+    meta: { requiresAuth: false },
+    component: SurveyPublicView,
+  },
+  {
+    path: "/asd",
     redirect: "/dashboard",
-    name: "Dashboard",
     component: DefaultLayout,
     meta: { requiresAuth: true },
     children: [
@@ -30,6 +36,7 @@ const routes = [
       },
     ],
   },
+
   {
     path: "/auth",
     redirect: "/login",

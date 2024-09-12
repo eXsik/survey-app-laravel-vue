@@ -86,5 +86,27 @@ export const useSurveyStore = defineStore("survey", {
         this.isLoading = false;
       }
     },
+
+    async getSurveyBySlug(slug) {
+      this.currentSurvey.isLoading = true;
+      console.log("siema");
+
+      return axiosClient
+        .get(`/survey-by-slug/${slug}`)
+        .then((res) => {
+          console.log("siema2");
+          this.currentSurvey.data = res.data.data;
+          return res;
+        })
+        .catch((err) => {
+          console.error(err);
+          throw err;
+        })
+        .finally(() => (this.currentSurvey.isLoading = false));
+    },
+
+    async saveSurveyAnswer({ surveyId, answers }) {
+      return axiosClient.post(`/survey/${surveyId}/answer`, { answers });
+    },
   },
 });

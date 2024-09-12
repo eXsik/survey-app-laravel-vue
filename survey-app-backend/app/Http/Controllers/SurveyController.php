@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSurveyAnswerRequest;
 use App\Http\Requests\StoreSurveyRequest;
 use App\Http\Requests\UpdateSurveyRequest;
 use App\Http\Resources\SurveyResource;
+use App\Models\Answer;
 use App\Models\Question;
+use App\Models\QuestionAnswer;
 use App\Models\Survey;
 use App\OptionType;
 use Illuminate\Http\Request;
@@ -61,6 +64,43 @@ class SurveyController extends Controller
         }
 
         return new SurveyResource($survey);
+    }
+
+    /**
+     * Display the specified resource for all users.
+     */
+    public function showForGuests(Survey $survey)
+    {
+        return new SurveyResource($survey);
+    }
+
+    public function storeAnswer(StoreSurveyAnswerRequest $request, Survey $survey)
+    {
+        $validated = $request->validated();
+
+        $surveyAnswer = Answer::create([
+            'survey_id' => $survey->id,
+            'start_date' => date('Y-m-d H:i:s'),
+            'end_date' => date('Y-m-d H:i:s')
+        ]);
+
+        foreach ($validated['answers'] as $questionId => $answer) {
+            $question = Question::where(['id' => $questionId, 'survey_id' => $survey->id])->get();
+
+            if (!$question) {
+                return response('Invalid question ID: ' . $questionId, 400);
+            }
+
+            $data = [
+                'question_id' => $questionId,
+                'answer_id' => $surveyAnswer->id,
+                'answer' => is_array($answer) ? json_encode($answer) : $answer
+            ];
+
+            QuestionAnswer::create($data);
+        }
+
+        return response('', 201);
     }
 
     /**

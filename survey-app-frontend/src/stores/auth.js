@@ -5,18 +5,20 @@ import { useSurveyStore } from "./surveys";
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: {
-      data: {},
+      data: JSON.parse(sessionStorage.getItem("USER")),
       token: sessionStorage.getItem("TOKEN"),
     },
   }),
   getters: {},
-  persist: true,
   actions: {
     async register(user) {
       return axiosClient.post("/register", user).then((response) => {
         this.user.data = response.data.user;
         this.user.token = response.data.token;
+
         sessionStorage.setItem("TOKEN", response.data.token);
+        let user = JSON.stringify(response.data.user);
+        sessionStorage.setItem("USER", user);
 
         return response.data;
       });
@@ -25,7 +27,10 @@ export const useAuthStore = defineStore("auth", {
       return axiosClient.post("/login", user).then((response) => {
         this.user.data = response.data.user;
         this.user.token = response.data.token;
+
         sessionStorage.setItem("TOKEN", response.data.token);
+        let user = JSON.stringify(response.data.user);
+        sessionStorage.setItem("USER", user);
 
         return response.data;
       });
@@ -40,8 +45,9 @@ export const useAuthStore = defineStore("auth", {
           surveyStore.surveys = [];
 
           sessionStorage.removeItem("TOKEN");
+          sessionStorage.removeItem("USER");
+
           localStorage.removeItem("survey");
-          localStorage.removeItem("auth");
 
           return response;
         })
