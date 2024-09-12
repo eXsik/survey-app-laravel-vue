@@ -1,5 +1,7 @@
-Survey Application
-Project Description
+# Survey Application
+
+## Project Description
+
 The Survey Application is a modern tool that enables users to easily create, distribute, and analyze surveys. Built using Laravel for the API backend and Vue.js with Pinia for state management, Vue Router for navigation, and Tailwind CSS for styling, this application provides an intuitive and user-friendly experience.
 Features
 
@@ -14,7 +16,7 @@ Features
     - Navigation with Vue Router: Smooth transitions between different sections of the app.
     - Performance and Scalability: Built on a robust architecture ensuring high performance.
 
-Technologies
+## Technologies
 
     - Backend: Laravel
     - Frontend: Vue.js
