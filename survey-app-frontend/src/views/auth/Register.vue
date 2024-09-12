@@ -13,6 +13,13 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
+    <Alert v-if="Object.keys(errors).length">
+      <div v-for="(field, index) of Object.keys(errors)" :key="index">
+        <div v-for="(error, i) of errors[field] || []" :key="i">
+          * {{ error }}
+        </div>
+      </div>
+    </Alert>
     <form
       class="space-y-6"
       action="#"
@@ -90,6 +97,7 @@ import { ref } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import { RouterLink, useRouter } from "vue-router";
 import InputField from "../../components/ui/InputField.vue";
+import Alert from "../../components/ui/Alert.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -99,11 +107,17 @@ const user = ref({
   password: null,
   password_confirmation: null,
 });
+const errors = ref({});
 
 async function handleRegistration() {
-  await authStore.register(user.value);
-
-  router.push({ name: "Dashboard" });
+  await authStore
+    .register(user.value)
+    .then(() => {
+      router.push({ name: "Dashboard" });
+    })
+    .catch((err) => {
+      if (err.response.status === 422) errors.value = err.response.data.errors;
+    });
 }
 </script>
 

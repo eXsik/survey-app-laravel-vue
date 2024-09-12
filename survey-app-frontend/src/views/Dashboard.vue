@@ -42,18 +42,32 @@
         <img
           :src="data.latestSurvey.image_url"
           :alt="data.latestSurvey.name + ' image'"
-          class="w-full my-4 mx-auto"
+          class="w-full my-4 mx-auto rounded-md"
         />
-        <h3 class="text-3xl font-bold mb-3">{{ data.latestSurvey.title }}</h3>
-        <div class="flex justify-between text-sm mb-1">
-          <div>Upload Date:</div>
+        <h3 class="text-2xl font-semibold mt-3 mb-6">
+          {{ data.latestSurvey.title }}
+        </h3>
+        <div class="flex justify-between text-sm my-3">
+          <div>Created at:</div>
           <div>{{ data.latestSurvey.created_at }}</div>
         </div>
-        <div class="flex justify-between text-sm mb-3">
-          <div>Answers:</div>
-          <div>{{ data.totalAnswers }}</div>
+        <div class="flex justify-between text-sm my-3">
+          <div>Expire date:</div>
+          <div>{{ data.latestSurvey.expire_date }}</div>
         </div>
-        <div class="flex justify-between">
+        <div class="flex justify-between text-sm my-3">
+          <div>Status:</div>
+          <div>{{ data.latestSurvey.status }}</div>
+        </div>
+        <div class="flex justify-between text-sm my-3">
+          <div>Questions:</div>
+          <div>{{ data.latestSurvey.questions }}</div>
+        </div>
+        <div class="flex justify-between text-sm my-3">
+          <div>Answers:</div>
+          <div>{{ data.latestSurvey.answers }}</div>
+        </div>
+        <div class="flex justify-between mt-6">
           <RouterLink
             :to="{ name: 'SurveyView', params: { id: data.latestSurvey.id } }"
             class="flex p-2 border border-indigo-500 text-sm rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 items-center transition-colors gap-2 hover:shadow-md"

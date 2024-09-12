@@ -108,21 +108,12 @@
           >
         </div>
         <div class="border-t border-gray-700 pb-3 pt-4">
-          <div class="flex items-center px-5">
-            <div class="flex-shrink-0">
-              <img
-                class="h-10 w-10 rounded-full"
-                :src="authStore.user.data?.imageUrl"
-                alt=""
-              />
+          <div class="flex items-center gap-x-3 px-5">
+            <div class="text-base font-medium leading-none text-white">
+              {{ authStore.user.data.name }}
             </div>
-            <div class="ml-3">
-              <div class="text-base font-medium leading-none text-white">
-                {{ authStore.user.data.name }}
-              </div>
-              <div class="text-sm font-medium leading-none text-gray-400">
-                {{ authStore.user.data.email }}
-              </div>
+            <div class="text-sm font-medium leading-none text-gray-400">
+              {{ authStore.user.data.email }}
             </div>
           </div>
           <div class="mt-3 space-y-1 px-2">
